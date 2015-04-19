@@ -313,6 +313,30 @@
           document.getElementById('nodelist').innerHTML = '<iframe seamless src="' + url + '"></iframe>';
         }
       });
+	
+	// Retrieve info
+	var info = new ol.Control.WMSGetFeatureInfo({
+            url: 'http://spatialapp-pfo2015.rhcloud.com:80/first/wms', 
+            title: 'Identify features by clicking',
+            queryVisible: true,
+            eventListeners: {
+                getfeatureinfo: function(event) {
+                    map.addPopup(new OpenLayers.Popup.FramedCloud(
+                        "chicken", 
+                        map.getLonLatFromPixel(event.xy),
+                        null,
+                        event.text,
+                        null,
+                        true
+                    ));
+                }
+            }
+        });
+
+	//Layers control
+	map.addControl(info);
+        info.activate();
+        map.addControl(new ol.Control.LayerSwitcher());
 
       // sets the chosen WMS version
       function setWMSVersion(wmsVersion) {
@@ -429,6 +453,7 @@
           map.updateSize()
         }
 
+	
     </script>
   </body>
 </html>
