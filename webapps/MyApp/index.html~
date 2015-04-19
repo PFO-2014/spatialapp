@@ -336,7 +336,7 @@
 	//Layers control
 	map.addControl(info);
         info.activate();
-        map.addControl(new OpenLayers.Control.LayerSwitcher());
+        map.addControl(new ol.Control.LayerSwitcher());
 
       // sets the chosen WMS version
       function setWMSVersion(wmsVersion) {
