@@ -1,15 +1,8 @@
-
 <!doctype html>
 <html lang="en">
   <head>
-
-  <link rel="stylesheet" href="http://spatialapp-pfo2015.rhcloud.com:80/openlayers3/ol.css" type="text/css">
-  <!--   Popup from https://github.com/walkermatt/ol3-popup
-   -->
-  <link rel="stylesheet" href="./ol3-popup-master/src/ol3-popup.css " type="text/css">
-
-  <style>
-         
+    <link rel="stylesheet" href="http://spatialapp-pfo2015.rhcloud.com:80/openlayers3/ol.css" type="text/css">
+    <style>
         .ol-zoom {
           top: 52px;
         }
@@ -96,8 +89,8 @@
         #map {
             clear: both;
             position: relative;
-            width: 50%;
-            height: 50%;
+            width: 512px;
+            height: 457px;
             border: 1px solid black;
         }
         #wrapper {
@@ -132,23 +125,10 @@
             font-weight: bold;
             padding: .2em .2em;
         }
-  </style>
-
-  
-  <!-- 
-  extend ol.overlay from https://github.com/walkermatt/ol3-popup    
-  
-  <script src="http://spatialapp-pfo2015.rhcloud.com:80/openlayers3/ol.js" type="text/javascript"></script>  
-  -->
-  <script src="./build/ol.js" type="text/javascript"></script>
-
-  <script src="./ol3-popup-master/src/ol3-popup.js" type="text/javascript"></script>
-    
-
-
-    <title>Adapted from OpenLayers map preview</title>
+    </style>
+    <script src="http://spatialapp-pfo2015.rhcloud.com:80/openlayers3/ol.js" type="text/javascript"></script>
+    <title>OpenLayers map preview</title>
   </head>
-
   <body>
     <div id="toolbar" style="display: none;">
       <ul>
@@ -231,31 +211,8 @@
           </li>
         </ul>
       </div>
-
-    <div><h1>A minimal "Plain Html Page" serving a Web-Map with to demonstrate WFS and WMS + some javascript interactivity</h1>
-          <h2>Hosted on <a href='http://en.wikipedia.org/wiki/OpenShift'><em>OpenShift Origin</em></a>, an open sourced PaaS. </h2>
-          <h3> Backended by a FOSS stack, versionning with <em>GIT</em>: 
-          <ul>
-            <li>PostgreSQL 9.2 + Postgis 2.0</li>
-            <li>Apache Tomcat 7 </li>
-            <li>Geoserver 2.7.0 </li>
-          </ul></h3>
-          <p> All Data issued by french gov. certified data provider "Minist&egrave;re de de l'&eacute;ducation nationale, de l'enseignement sup&eacute;rieur et de la recherche" released under <em>Open Licence</em>.</p>
-          <p> Base Layer under <em>ODbl</em>, Tiles under CC-BY-SA. <a href='http://www.openstreetmap.org/copyright'><em>&copy; OpenStreetMap contributors</em></a>   </p>
-      
-    </div>
-
     <div id="map">
-
-      <div class="ol-toggle-options ol-unselectable">
-                <a title="Toggle optionsvtoolbar" onClick="toggleControlPanel()" href="#toggle">...</a>
-                </div>
-
-      <div id="popup" class="ol-popup">
-                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-                <div id="popup-content"></div>
-                </div>
-
+      <div class="ol-toggle-options ol-unselectable"><a title="Toggle options toolbar" onClick="toggleControlPanel()" href="#toggle">...</a></div>
     </div>
     <div id="wrapper">
         <div id="location"></div>
@@ -264,13 +221,7 @@
     <div id="nodelist">
         <em>Click on the map to get feature info</em>
     </div>
-
     <script type="text/javascript">
-
-
-      var popup = new ol.Overlay.Popup();
-
-
       var pureCoverage = false;
       // if this is just a coverage or a group of them, disable a few items,
       // and default to jpeg format
@@ -293,29 +244,17 @@
         coordinateFormat: ol.coordinate.createStringXY(5),
         undefinedHTML: '&nbsp;'
       });
-
-      //Base Layer
-      var osmla = new ol.layer.Tile({
-        visible: true,
-        source: new ol.source.OSM()
-      });
-
       var untiled = new ol.layer.Image({
         source: new ol.source.ImageWMS({
           ratio: 1,
           url: 'http://spatialapp-pfo2015.rhcloud.com:80/first/wms',
           params: {'FORMAT': format,
                    'VERSION': '1.1.1',  
-                   'LAYERS': 'first:coll_pub_31',
-                   'STYLES': '',
-                   projection:"EPSG:900913"
+                LAYERS: 'first:coll_pub_31',
+                STYLES: '',
           }
         })
       });
-
-      var extent = untiled.getExtent();
-        console.log(extent);
-
       var tiled = new ol.layer.Tile({
         visible: false,
         source: new ol.source.TileWMS({
@@ -325,65 +264,20 @@
                    tiled: true,
                 LAYERS: 'first:coll_pub_31',
                 STYLES: '',
-                projection:"EPSG:900913"
           }
         })
       });
-
-
-      /**
-      *Source the vector features
-      */
-      var coll32source = new ol.source.GeoJSON({
-        url: './test2.json',
-        
-      });
-
-      /**
-      *Create a vector layer to display the features within the GeoJSON source and
-      *applies a simple icon style to all features
-      */
-      var coll32Layer = new ol.layer.Vector({
-        title: 'collèges Gers (32)',
-        source: coll32source,
-        style: new ol.style.Style({
-            image: new ol.style.Icon(({
-            anchor: [0.5, 40],
-            scale: 0.1,
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'pixels',
-            src: 'marker.png'
-            }))
-        })
-      });
-
-      // *
-      // *Add the layer to the map
-      
-      // map.addLayer(coll32Layer)
-
-
-
       var projection = new ol.proj.Projection({
-          code: 'EPSG:900913',
+          code: 'EPSG:2154',
           units: 'm',
           axisOrientation: 'neu'
       });
-
-
-
-
-
-
-      //complex object of type OpenLayers.Map
       var map = new ol.Map({
         controls: ol.control.defaults({
           attribution: false
         }).extend([mousePositionControl]),
         target: 'map',
         layers: [
-          osmla,
-          coll32Layer,
           untiled,
           tiled
         ],
@@ -391,15 +285,6 @@
            projection: projection
         })
       });
-
-
-      map.addOverlay(popup);
-
-      
-
-      
-
-
       map.getView().on('change:resolution', function(evt) {
         var resolution = evt.target.get('resolution');
         var units = map.getView().getProjection().getUnits();
@@ -416,76 +301,18 @@
         document.getElementById('scale').innerHTML = "Scale = 1 : " + scale;
       });
       map.getView().fitExtent(bounds, map.getSize());
-      //Hardcoded the entry view point. TODO: dynamic entry
-      map.getView().setCenter([142892.675481258, 5398481.744562289]);
-      map.getView().setRotation(0);
-      map.getView().setResolution(610);
-
-      /**
-      * click handler for "interactivity"
-      */
       map.on('singleclick', function(evt) {
-        //Build Table below map
         document.getElementById('nodelist').innerHTML = "Loading... please wait...";
-        var coordinate = evt.coordinate;
         var view = map.getView();
         var viewResolution = view.getResolution();
         var source = untiled.get('visible') ? untiled.getSource() : tiled.getSource();
         var url = source.getGetFeatureInfoUrl(
-          coordinate, viewResolution, view.getProjection(),
+          evt.coordinate, viewResolution, view.getProjection(),
           {'INFO_FORMAT': 'text/html', 'FEATURE_COUNT': 50});
         if (url) {
-          document.getElementById('nodelist').innerHTML = '<h1>Retrieve Feature @Pixel from WMS url</h1><iframe seamless src="' + url + '"></iframe>';
+          document.getElementById('nodelist').innerHTML = '<iframe seamless src="' + url + '"></iframe>';
         }
-
-        // Attempt to find a marker from the coll32Layer
-        var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
-          return feature;
-        });
-
-        if (feature) {
-
-        var coord = feature.getGeometry().getCoordinates();
-        var props = feature.getProperties();
-        var info = "<h2><a href='#'>" + props.nom + "</a></h2>";
-            info += "<p>" + props.school_fr +" "+ props.statut +"</p>";
-            info += "<p>Status: " + props.uai +"</p>";
-        // Offset the popup so it points at the middle of the marker not the tip
-        popup.setOffset([0, -22]);
-        popup.show(coord, info);
-      }
-      else{
-        // overlay.setPosition(coordinate);
-        var prettyCoord = ol.coordinate.toStringHDMS(ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326'), 2);
-          
-
-        var pixel = map.getPixelFromCoordinate(coordinate);
-        popup.show(evt.coordinate, '<div><h2>Coordinates</h2><p>' + prettyCoord + '</p><p>' + pixel + '</p></div>');
-      }
-
-
       });
-	
-	     
-       /**
-      * pointermove handler. Change pointer style when hovering over non-transparent pixel
-      */
-
-      map.on('pointermove', function(evt) {
-        if (evt.dragging) {
-          return;
-        }
-        var pixel = map.getEventPixel(evt.originalEvent);
-            // console.log(map.getCoordinateFromPixel(pixel));
-        var hit = map.forEachLayerAtPixel(pixel, function(layer) {
-            console.log(map.getCoordinateFromPixel(pixel));
-          });
-        //   return true;
-        // });
-        // map.getTargetElement().style.cursor = hit ? 'pointer' : '';
-      });
-
-
 
       // sets the chosen WMS version
       function setWMSVersion(wmsVersion) {
@@ -602,7 +429,7 @@
           map.updateSize()
         }
 
-	
     </script>
   </body>
 </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
