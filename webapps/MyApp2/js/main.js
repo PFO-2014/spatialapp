@@ -9,10 +9,7 @@ var popup;
 
 
 function init(){
-
-	////////////////////////////////////////////////////////
-	// MAP + VIEW
-	////////////////////////////////////////////////////////
+	//instanciate a ol.Map obj 
 	map = new ol.Map({
 		target:'map',
 		renderer:'canvas',
@@ -25,20 +22,19 @@ function init(){
 		})
 	});
 
-	////////////////////////////////////////////////////////
-	// LAYERS
-	////////////////////////////////////////////////////////
 	var baseLayer = new ol.layer.Tile({
 		source: new ol.source.OSM()
 	});
 
-
-	// Source the vector features
+		// Source the vector features
 	var coll32source = new ol.source.GeoJSON({
 		url: './college_32_source.geojson',	
+
 	});
+
 	// Create a vector layer to display the features within the GeoJSON source and
 	// applies a simple icon style to all features
+	
 	var coll32Layer = new ol.layer.Vector({
     	title: 'collèges Gers (32)',
     	source: coll32source,
@@ -53,29 +49,8 @@ function init(){
 		    }))
     	})
     });  
-
-
-	// Source a WFS vector features
-	var coll12source = new ol.source.GeoJSON({
-		url: 'http://spatialapp-pfo2015.rhcloud.com/first/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=first:college_public_12&maxFeatures=50&outputFormat=application%2Fjson',	
-	});
-	// Create corresponding ol.layer.Vector with style
-	var coll12Layer =  new ol.layer.Vector({
-		title: 'collèges Aveyron (12)',
-      	source: coll12source,
-
-		style: new ol.style.Style({
-        	image: new ol.style.Icon(({
-        		anchor: [0.5, 40],
-        		scale: 0.1,
-		        anchorXUnits: 'fraction',
-		        anchorYUnits: 'pixels',
-		        src: './marker.png'
-		    }))
-    	})
-    });
-
-
+  
+	
 
 	var coll_pub_31 = new ol.layer.Tile({
         
@@ -110,16 +85,14 @@ function init(){
         })
       });
 
-	// Stack layers when adding them to the map 
+	// Stack layers whn adding them to the map 
 	map.addLayer(baseLayer);
 	map.addLayer(untiled);
 	map.addLayer(coll32Layer); 
-	map.addLayer(coll12Layer);
 
 	layersArray.push(baseLayer); //0
 	layersArray.push(untiled); //1
 	layersArray.push(coll32Layer); //2
-	layersArray.push(coll12Layer); //2
 
 	
 	
@@ -162,7 +135,7 @@ function init(){
 
 
 	////////////////////////////////////////////////////////
-	// MOUSE EVENTS 
+	// MOUSE EVENT
 	////////////////////////////////////////////////////////
 	map.on('singleclick', function(evt) {
 		
@@ -274,10 +247,12 @@ function init(){
 		} else {
 			console.log("Uh Oh, something went wrong.");
 		}
+
+
+		
+
+
 	});
-
-
-	
 
 
 
@@ -306,20 +281,16 @@ function destroyPopup(){
 
 function removeTopLayer(){
 	var layers = map.getLayers();
-
-	if (layers.a.length > 1)
-    	layers.pop();
+    layers.pop();
 }
 
 function swapTopLayer(){
 	// get reference for the object collection of layer
 	var layers = map.getLayers();
-	if (layers.a.length > 2){
-		// reference to the top-level layer (lastly added)
-		var topLayer = layers.removeAt(2);
-		// send to back (above base layer)
-		layers.insertAt(1, topLayer);
-	}
+	// reference to the top-level layer (lastly added)
+	var topLayer = layers.removeAt(2);
+	// send to back (above base layer)
+	layers.insertAt(1, topLayer);
 }
 
 // Layer visibility function
