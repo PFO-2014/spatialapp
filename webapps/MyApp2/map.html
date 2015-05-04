@@ -37,8 +37,9 @@
       <div id="temp-buttons">
         <button onclick='removeTopLayer()'>Remove Top Layer</button>
         <button onclick='swapTopLayer()'>Swap Top Layers</button>
-        <input  style='cursor:pointer' type="checkbox" value="1" onclick="javascript:layerswitch(this)" class="layer1" name="layer1check" id="layer1check"/><label id="layer1checkLabel" for="layer1check">WMS Untiled Layer Switcher</label>
-        <input  style='cursor:pointer' type="checkbox" value="2" onclick="javascript:layerswitch(this)" class="layer2" name="layer2check" id="layer2check"/><label id="layer2checkLabel" for="layer2check">GeoJSON layer switcher</label>
+        <input  style='cursor:pointer' type="checkbox" value="1" checked onclick="javascript:layerswitch(this)" class="layer1" name="layer1check" id="layer1check"/><label id="layer1checkLabel" for="layer1check">WMS Untiled Layer Switcher</label>
+        <input  style='cursor:pointer' type="checkbox" value="2" checked onclick="javascript:layerswitch(this)" class="layer2" name="layer2check" id="layer2check"/><label id="layer2checkLabel" for="layer2check">LOCAL GeoJSON layer switcher</label>
+         <input  style='cursor:pointer' type="checkbox" value="3" checked onclick="javascript:layerswitch(this)" class="layer3" name="layer3check" id="layer3check"/><label id="layer3checkLabel" for="layer3check">WFS GeoJSON layer switcher</label>
       </div>
 
       <div id="coords">Mouse position: </div>
