@@ -28,9 +28,19 @@ function init(){
 	////////////////////////////////////////////////////////
 	// LAYERS
 	////////////////////////////////////////////////////////
+	
+
+	// var baseLayer = new ol.layer.Tile({
+	// 	source: new ol.source.OSM()
+	// });
+
+	//Switch for a free tileServer
 	var baseLayer = new ol.layer.Tile({
-		source: new ol.source.OSM()
+		source: new ol.source.MapQuest({layer: 'osm'}),
+		attributions: [new ol.Attribution({ html: ['Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'] })]
+
 	});
+
 
 
 	// Source the vector features
